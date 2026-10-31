@@ -9,7 +9,7 @@ A static web app that turns Excel student lists into printable hall tickets. Mat
 3. Select the worksheet and check the three column mappings. The first nonempty row must contain column headers. Every nonblank student row needs all three fields. No rows are silently discarded.
 4. Click **Print / Save PDF**. Choose A4 portrait, 100% scale, headers and footers off. Select Save as PDF to download a PDF. Preview all pages before printing.
 
-The initial preview is a blank template; **Load demo** generates eight fictional students. Files and student information stay in browser memory and are cleared on refresh. There is no backend, tracking, remote font, or runtime CDN.
+The initial preview is a blank template. Click **Show preview** to view your hall tickets after uploading student data. Files and student information stay in browser memory and are cleared on refresh. There is no backend, tracking, remote font, or runtime CDN.
 
 ## Local preview
 

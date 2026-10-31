@@ -1,7 +1,7 @@
 import { fields, guessColumns, parseStudents } from './data.js';
 const $ = id => document.getElementById(id);
 let students = [], workbook, rows = [], filename = '', loading = false;
-const demo = [['AARAV SHARMA','RAJESH SHARMA','8th'],['SARA AHMED','IMRAN AHMED','8th'],['ANANYA REDDY','KIRAN REDDY','7th'],['ROHAN KUMAR','SURESH KUMAR','7th'],['MEERA NAIR','ARUN NAIR','6th'],['ADAM KHAN','IRFAN KHAN','6th'],['ISHA PATEL','AMIT PATEL','5th'],['VIHAAN RAO','SANJAY RAO','5th']];
+const sampleRows = [['AARAV SHARMA','RAJESH SHARMA','8th'],['SARA AHMED','IMRAN AHMED','8th'],['ANANYA REDDY','KIRAN REDDY','7th'],['ROHAN KUMAR','SURESH KUMAR','7th'],['MEERA NAIR','ARUN NAIR','6th'],['ADAM KHAN','IRFAN KHAN','6th'],['ISHA PATEL','AMIT PATEL','5th'],['VIHAAN RAO','SANJAY RAO','5th']];
 function error(message = '') { $('error').textContent = message; $('error').hidden = !message; }
 function cell(tag, text) { const el = document.createElement(tag); el.textContent = text; return el; }
 function ticket(student) {
@@ -79,9 +79,13 @@ $('dropzone').addEventListener('dragleave',() => $('dropzone').classList.remove(
 $('dropzone').addEventListener('drop',e => {e.preventDefault(); $('dropzone').classList.remove('dragging'); upload(e.dataTransfer.files[0]);});
 $('sample').addEventListener('click',() => {
   if (!globalThis.XLSX) { error('The Excel reader could not load. Refresh and try again.'); return; }
-  const book = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(book,XLSX.utils.aoa_to_sheet([fields,...demo]),'Students'); XLSX.writeFile(book,'hall-ticket-students.xlsx');
+  const book = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(book,XLSX.utils.aoa_to_sheet([fields,...sampleRows]),'Students'); XLSX.writeFile(book,'hall-ticket-students.xlsx');
 });
-$('demo').addEventListener('click',() => {students=demo; $('mapping').hidden=true; error(); $('status').textContent='Demo data loaded. Upload your Excel file to replace it.'; render();});
+$('show-preview').addEventListener('click',() => {
+  if (!$('settings').reportValidity()) return;
+  render();
+  document.querySelector('.preview-panel').scrollIntoView({block:'start'});
+});
 $('clear').addEventListener('click',() => {students=[]; workbook=undefined; rows=[]; $('mapping').hidden=true; error(); $('status').textContent='Student data cleared from this page.'; render();});
 $('print').addEventListener('click',() => { if (students.length && $('settings').reportValidity()) window.print(); });
 render();
