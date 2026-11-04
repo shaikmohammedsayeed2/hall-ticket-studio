@@ -14,7 +14,8 @@ function ticket(student) {
   const school = table.insertRow(); const heading = document.createElement('th'); heading.colSpan = 2; heading.className = 'school'; heading.textContent = settings.get('school'); school.append(heading);
   const exam = table.insertRow(); const sub = document.createElement('th'); sub.colSpan = 2; sub.className = 'exam'; sub.textContent = `${settings.get('exam')} - ${settings.get('title')} ${settings.get('year')}`; exam.append(sub);
   ['STUDENT NAME','FATHER / GUARDIAN','CLASS'].forEach((label, i) => { const row = table.insertRow(); const th = cell('th',label); th.scope = 'row'; row.append(th,cell('td',student[i])); });
-  el.append(table); return el;
+  const signature = document.createElement('img'); signature.className = 'principal-signature'; signature.src = 'assets/principal-signature.png'; signature.alt = 'Principal signature';
+  el.append(table, signature); return el;
 }
 function render() {
   const source = students.length ? students : [['Student name','Father / guardian name','Class']];

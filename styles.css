@@ -3,3 +3,5 @@
 @media print{html,body{background:white;margin:0;padding:0}header,.intro,.setup,.preview-toolbar,.print-hint,footer{display:none!important}main,.workspace,.preview-panel,.paper-scroller,#pages{display:block;margin:0;padding:0;max-width:none;max-height:none;overflow:visible;border:none;box-shadow:none;border-radius:0}.paper{width:195mm;height:280mm;aspect-ratio:auto;box-shadow:none;margin:0;padding:0;gap:4mm 5.5mm;break-after:page;page-break-after:always;container-type:normal}.paper:last-child{break-after:auto;page-break-after:auto}.ticket{border:.5pt solid black;break-inside:avoid}.ticket table{font-size:10pt;line-height:1.05}.ticket th,.ticket td{height:8.5mm;padding:.6mm;border-width:.5pt}.ticket th{font-size:9pt}.ticket th.school,.ticket th.exam{height:8.5mm;font-size:10pt}}
 
 .ticket th[scope="row"]{white-space:nowrap}
+.ticket{position:relative}
+.principal-signature{position:absolute;left:3%;bottom:3%;width:24%;height:25%;object-fit:contain;object-position:left bottom}
