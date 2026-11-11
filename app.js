@@ -1,7 +1,7 @@
-import { fields, guessColumns, parseStudents } from './data.js';
+import { fields, guessColumns, parseStudents } from './data.js?v=student-id-1';
 const $ = id => document.getElementById(id);
 let students = [], workbook, rows = [], filename = '', loading = false;
-const sampleRows = [['AARAV SHARMA','RAJESH SHARMA','8th'],['SARA AHMED','IMRAN AHMED','8th'],['ANANYA REDDY','KIRAN REDDY','7th'],['ROHAN KUMAR','SURESH KUMAR','7th'],['MEERA NAIR','ARUN NAIR','6th'],['ADAM KHAN','IRFAN KHAN','6th'],['ISHA PATEL','AMIT PATEL','5th'],['VIHAAN RAO','SANJAY RAO','5th']];
+const sampleRows = [['AARAV SHARMA','RAJESH SHARMA','8th','001'],['SARA AHMED','IMRAN AHMED','8th','002'],['ANANYA REDDY','KIRAN REDDY','7th','003'],['ROHAN KUMAR','SURESH KUMAR','7th','004'],['MEERA NAIR','ARUN NAIR','6th','005'],['ADAM KHAN','IRFAN KHAN','6th','006'],['ISHA PATEL','AMIT PATEL','5th','007'],['VIHAAN RAO','SANJAY RAO','5th','008']];
 function error(message = '') { $('error').textContent = message; $('error').hidden = !message; }
 function cell(tag, text) { const el = document.createElement(tag); el.textContent = text; return el; }
 function ticket(student) {
@@ -13,12 +13,22 @@ function ticket(student) {
   group.append(labelColumn, document.createElement('col')); table.append(group);
   const school = table.insertRow(); const heading = document.createElement('th'); heading.colSpan = 2; heading.className = 'school'; heading.textContent = settings.get('school'); school.append(heading);
   const exam = table.insertRow(); const sub = document.createElement('th'); sub.colSpan = 2; sub.className = 'exam'; sub.textContent = `${settings.get('exam')} - ${settings.get('title')} ${settings.get('year')}`; exam.append(sub);
-  ['STUDENT NAME','FATHER / GUARDIAN','CLASS'].forEach((label, i) => { const row = table.insertRow(); const th = cell('th',label); th.scope = 'row'; row.append(th,cell('td',student[i])); });
+  ['STUDENT NAME','FATHER / GUARDIAN','CLASS'].forEach((label, i) => {
+    const row = table.insertRow();
+    if (i === 2 && $('show-student-id').checked) {
+      row.className = 'class-id-row';
+      const classCell = document.createElement('td'); classCell.append(cell('strong','CLASS: '), document.createTextNode(student[2]));
+      const idCell = document.createElement('td'); idCell.append(cell('strong','STUDENT ID: '), document.createTextNode(student[3] || ''));
+      row.append(classCell, idCell);
+    } else {
+      const th = cell('th',label); th.scope = 'row'; row.append(th,cell('td',student[i]));
+    }
+  });
   const signature = document.createElement('img'); signature.className = 'principal-signature'; signature.src = 'assets/principal-signature.png'; signature.alt = 'Principal signature';
   el.append(table, signature); return el;
 }
 function render() {
-  const source = students.length ? students : [['Student name','Father / guardian name','Class']];
+  const source = students.length ? students : [['Student name','Father / guardian name','Class','Student ID']];
   const fragment = document.createDocumentFragment();
   for(let i=0; i<source.length; i+=8) {
     const page = document.createElement('section'); page.className = 'paper'; page.setAttribute('aria-label',`A4 page ${i/8+1}`);
@@ -30,6 +40,7 @@ function render() {
   $('clear').hidden = !students.length;
 }
 $('settings').addEventListener('input',render);
+$('show-student-id').addEventListener('change',render);
 function applyColumns() {
   try {
     const columns = fields.map((_, i) => Number($(`column-${i}`).value));
@@ -48,9 +59,9 @@ function loadSheet() {
     if (!rows.length) throw new Error('This worksheet is empty. Choose another worksheet.');
     const headers = rows[0]; const guessed = guessColumns(headers);
     const controls = fields.map((field,i) => {
-      const label = cell('label',field === 'Father Name' ? 'Father / guardian name' : field);
+      const label = cell('label',field === 'Father Name' ? 'Father / guardian name' : field === 'Student ID' ? 'Student ID (optional)' : field);
       const select = document.createElement('select'); select.id = `column-${i}`;
-      select.append(new Option('Choose a column…','-1'));
+      select.append(new Option(field === 'Student ID' ? 'No student ID' : 'Choose a column…','-1'));
       headers.forEach((header,j) => select.add(new Option(`${header || '(blank header)'} (column ${j+1})`,String(j))));
       select.value = String(guessed[i]); select.addEventListener('change',applyColumns); label.append(select); return label;
     });

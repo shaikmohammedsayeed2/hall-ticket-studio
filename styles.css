@@ -5,3 +5,8 @@
 .ticket th[scope="row"]{white-space:nowrap}
 .ticket{position:relative}
 .principal-signature{position:absolute;left:3%;bottom:3%;width:24%;height:25%;object-fit:contain;object-position:left bottom}
+
+.preview-toolbar{flex-wrap:wrap}.id-toggle{display:flex;align-items:center;gap:8px;margin:0}.id-toggle input{width:auto;margin:0;padding:0;accent-color:var(--green)}
+
+.ticket .class-id-row td:first-child{border-right:.7px solid #000}
+@media print{.ticket .class-id-row td:first-child{border-right-width:.5pt}}
